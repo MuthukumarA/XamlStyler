@@ -1,9 +1,9 @@
 ﻿// © Xavalon. All rights reserved.
 
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using Xavalon.XamlStyler.Core;
 using Xavalon.XamlStyler.Core.DocumentManipulation;
 using Xavalon.XamlStyler.Core.Options;
@@ -441,11 +441,12 @@ namespace Xavalon.XamlStyler.UnitTests
             // Exercise stylerService using supplied test XAML data
             string actualOutput = stylerService.StyleDocument(File.ReadAllText($"{testFileBaseName}.testxaml"));
 
-            // Write output to ".actual" file for further investigation
-            File.WriteAllText($"{testFileResultBaseName}.actual", actualOutput, Encoding.UTF8);
+            // Compare string arrays to normalize for line endings.
+            string[] expectedLines = File.ReadAllLines($"{testFileResultBaseName}.expected");
+            string[] actualLines = actualOutput.Trim().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             // Check result
-            Assert.That(actualOutput, Is.EqualTo(File.ReadAllText($"{testFileResultBaseName}.expected")));
+            Assert.AreEqual(expectedLines, actualLines);
         }
 
         private string GetConfiguration(string path)
