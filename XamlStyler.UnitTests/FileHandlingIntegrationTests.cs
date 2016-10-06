@@ -424,14 +424,12 @@ namespace Xavalon.XamlStyler.UnitTests
             // Write output to ".actual" file for further investigation
             File.WriteAllText($"{testFileResultBaseName}.actual", actualOutput, Encoding.UTF8);
 
-            Assert.That(actualOutput, Is.EqualTo(File.ReadAllText($"{testFileResultBaseName}.expected")));
-
             // Compare string arrays to normalize for line endings.
-            //string[] expectedLines = File.ReadAllLines($"{testFileResultBaseName}.expected");
-            //string[] actualLines = actualOutput.Trim().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string[] expectedLines = File.ReadAllLines($"{testFileResultBaseName}.expected");
+            string[] actualLines = actualOutput.Trim().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             // Check result
-            //Assert.AreEqual(expectedLines, actualLines);
+            Assert.AreEqual(expectedLines, actualLines);
         }
 
         private StylerOptions GetLegacyStylerOptions()
